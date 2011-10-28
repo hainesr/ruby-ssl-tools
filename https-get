@@ -35,9 +35,34 @@ require 'uri'
 require 'net/https'
 require 'optparse'
 
+CA_PATH = '/etc/ssl/certs'
+
+options = {:ca_path => CA_PATH}
 opts = OptionParser.new do |opt|
-  opt.banner = "Usage: ca-signed [options] URI"
-  opt.separator "  Where URI is a https URI and [options] can be:"
+  opt.banner = "Usage: https-get [options] URI"
+  opt.separator "  GET the first 200 bytes of whatever is at the supplied URI,"
+  opt.separator "  where URI is a https URI and [options] (curl-like) can be:"
+  opt.on("-E CERT_FILE:PASSWORD", "--cert=CERT_FILE:PASSWORD", "Use the " +
+    "specified client certificate file. If the optional password is not " +
+    "provided it will be asked for on the command line. Must be in PEM " +
+    "format.") do |val|
+      cert, pass = val.chomp.split(":", 2)
+      options[:client_cert] = cert
+      options[:client_pass] = pass if pass
+  end
+  opt.on("--cacert=CERT_FILE", "Use the specified certificate file to " +
+    "verify the peer. Must be in PEM format.") do |val|
+      options[:ca_file] = val.chomp
+  end
+  opt.on("--capath=CERTS_PATH", "Use the specified certificate directory to " +
+    "verify the peer. Certificates must be in PEM format (defaults to " +
+    "'#{CA_PATH}').") do |val|
+      options[:ca_path] = val.chomp
+  end
+  opt.on("-k", "--insecure", "Allow insecure connections: no peer " +
+    "verification.") do
+      options[:no_verify] = true
+  end
   opt.on_tail("-h", "-?", "--help", "Show this help message.") do
     puts opt
     exit
@@ -65,11 +90,29 @@ end
 
 http = Net::HTTP.new(uri.host, uri.port)
 http.use_ssl = true
-http.ca_path = '/etc/ssl/certs'
-http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-http.verify_depth = 5
+
+# Peer verification
+if options[:no_verify]
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+else
+  if options[:ca_file]
+    http.ca_file = options[:ca_file]
+  else
+    http.ca_path = options[:ca_path]
+  end
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+end
+
+# Client authentication
+if options[:client_cert]
+  pem = File.read(options[:client_cert])
+  http.cert = OpenSSL::X509::Certificate.new(pem)
+  http.key = OpenSSL::PKey::RSA.new(pem, options[:client_pass])
+end
 
 request = Net::HTTP::Get.new(uri.path)
+request["Accept"] = "*/*"
+request["Range"] = "bytes=0-199"
 response = http.request(request)
 
-puts "Status: #{response.code}\n  Body: #{response.body[0..200]}..."
+puts "Status: #{response.code}\n  Body:\n#{response.body}..."
