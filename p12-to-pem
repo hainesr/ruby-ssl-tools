@@ -31,19 +31,36 @@
 #
 # Author: Robert Haines
 
+require 'rubygems'
 require 'openssl'
 require 'optparse'
+require 'highline/import'
 
-options = {}
+options = {:cipher => "des3"}
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: p12-to-pem [options] p12-file"
-  opt.separator "  Convert the supplied p12 file into a pem file where " +
+  opt.separator "  Convert the supplied p12 file into pem format where " +
     "[options] can be:"
-  opt.on("-p PASSWORD", "--password=PASSWORD", "") do |val|
-    options[:password] = val.chomp
+  opt.on("-p PASSWORD", "--password=PASSWORD", "The import password for the " +
+    "p12 file. If not specified it will be asked for.") do |val|
+      options[:password] = val.chomp
+  end
+  opt.on("-R", "--reuse-password", "Use the same password for pem export as " +
+    "was used for the p12 import.") do
+      options[:reuse] = true
+  end
+  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " +
+    "encrypting the output. Use 'none' for no encryption. Default " +
+    "'#{options[:cipher]}'.") do |val|
+      options[:cipher] = val.chomp
+  end
+  opt.on("-l", "--list-ciphers", "List available ciphers for output.") do
+    list = OpenSSL::Cipher.ciphers
+    puts list[(list.length / 2)..-1]
+    exit
   end
   opt.on_tail("-h", "-?", "--help", "Show this help message.") do
-    puts opt
+    puts opts
     exit
   end
   opt.on_tail("-v", "--version", "Show the version.") do
@@ -56,15 +73,32 @@ opts.parse!
 
 infile = ARGV.shift
 if infile.nil?
-  data = ARGF.read
+  $stderr.puts opts
+  exit(1)
 else
   data = File.read(infile.chomp)
 end
 
-p12 = OpenSSL::PKCS12.new(data, options[:password])
+password = options[:password]
+begin
+  p12 = OpenSSL::PKCS12.new(data, password)
+rescue
+  hl = HighLine.new($stdin, $stderr)
+  password = hl.ask("Enter Import Password: ") { |q| q.echo = false }
+  retry
+end
+
+password = nil unless options[:reuse]
+
 cert = OpenSSL::X509::Certificate.new(p12.certificate)
 key = OpenSSL::PKey::RSA.new(p12.key)
-cipher = OpenSSL::Cipher.new("AES256")
+
+if options[:cipher] == "none"
+  cipher = nil
+  password = nil
+else
+  cipher = OpenSSL::Cipher.new(options[:cipher])
+end
 
 puts cert
-puts key.to_pem(cipher, options[:password])
+puts key.to_pem(cipher, password)
