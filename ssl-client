@@ -1,0 +1,82 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2011 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#  * Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+#  * Neither the names of The University of Manchester nor the names of its
+#    contributors may be used to endorse or promote products derived from this
+#    software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Author: Robert Haines
+
+require 'socket'
+require 'openssl'
+require 'optparse'
+
+DEFAULT_PORT = 6666
+
+options = {:port => DEFAULT_PORT}
+opts = OptionParser.new do |opt|
+  opt.banner = "Usage: ssl-client [options] host"
+  opt.separator "  A basic secure sockets client where [options] can be:"
+  opt.on("-p PORT", "--port=PORT", "The port number to connect to. Default " +
+    "#{DEFAULT_PORT}.") do |val|
+      options[:port] = val.chomp.to_i
+  end
+  opt.on("-c CERTIFICATE", "--cert=CERTICATE", "Certificate and key in " +
+    "pem format.") do |val|
+      options[:cert] = val.chomp
+  end
+  opt.on_tail("-h", "-?", "--help", "Show this help message.") do
+    puts opts
+    exit
+  end
+  opt.on_tail("-v", "--version", "Show the version.") do
+    puts "1.0"
+    exit
+  end
+end
+
+opts.parse!
+
+begin
+  options[:host] = ARGV.shift.chomp
+rescue
+  puts "Please supply a host to connect to.", opts
+  exit(1)
+end
+
+context = OpenSSL::SSL::SSLContext.new
+context.ca_file = options[:cert]
+context.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+tcp = TCPSocket.new(options[:host], options[:port])
+socket = OpenSSL::SSL::SSLSocket.new(tcp, context)
+socket.connect
+puts "Connected to server..."
+while(out = socket.gets)
+  puts out
+end
+puts "Connection closed."
