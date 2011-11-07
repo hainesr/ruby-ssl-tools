@@ -38,8 +38,14 @@ require 'highline'
 
 MIN_KEY_SIZE = 1024
 KEY_TYPES = [:dsa, :rsa]
+DEFAULT_TYPE = KEY_TYPES[1]
 
-options = {:type => :dsa, :size => MIN_KEY_SIZE, :cipher => "aes-128-cbc"}
+options = {
+  :type => DEFAULT_TYPE,
+  :size => MIN_KEY_SIZE,
+  :cipher => "aes-128-cbc"
+}
+
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: key-gen [options]"
   opt.separator "  Generate a public key pair where [options] can be:"
@@ -49,7 +55,7 @@ opts = OptionParser.new do |opt|
       options[:out] = val.chomp
   end
   opt.on("-t TYPE", "--type=TYPE", "The type of the key. Can be 'rsa' or " +
-    "'dsa' (default).") do |val|
+    "'dsa'. Default '#{DEFAULT_TYPE}'.") do |val|
       type = val.chomp.downcase.to_sym
       options[:type] = type if KEY_TYPES.include? type
   end
@@ -84,9 +90,9 @@ opts.parse!
 options[:out] = "id_#{options[:type]}" unless options[:out]
 
 case options[:type]
-  when :dsa
+when :dsa
   key = OpenSSL::PKey::DSA.generate(options[:size])
-  when :rsa
+when :rsa
   key = OpenSSL::PKey::RSA.generate(options[:size], 17)
 end
 pkey = key.public_key
@@ -100,7 +106,12 @@ else
   p1 = hl.ask("Enter passphrase: ") { |q| q.echo = false }
   p2 = hl.ask("Verify passphrase: ") { |q| q.echo = false }
   if p1 == p2
-    password = p1
+    if p1 == ""
+      password = nil
+      cipher = nil
+    else
+      password = p1
+    end
   else
     $stderr.puts "Password mismatch"
     exit(1)
