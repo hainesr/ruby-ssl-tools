@@ -1,0 +1,115 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2011 The University of Manchester, UK.
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#  * Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+#  * Neither the names of The University of Manchester nor the names of its
+#    contributors may be used to endorse or promote products derived from this
+#    software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Author: Robert Haines
+
+require 'openssl'
+require 'optparse'
+
+DEFAULT_NAME = 'CN=nobody/DC=example'
+DEFAULT_TIME = 3600
+
+options = {:name => DEFAULT_NAME, :time => DEFAULT_TIME}
+opts = OptionParser.new do |opt|
+  opt.banner = "Usage: cert-gen [options] key"
+  opt.separator "  Generate a self-signed certificate in pem format where " +
+    "[options] can be:"
+  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " +
+    "generated certificate. If this is not specified it will be written to " +
+    "the terminal.") do |val|
+      options[:out] = val.chomp
+  end
+  opt.on("-n NAME", "--name=NAME", "The name to be used for the " +
+    "subject/issuer of the certificate. Default '#{DEFAULT_NAME}'.") do |val|
+      options[:name] = val.chomp
+  end
+  opt.on("-t TIME", "--time TIME", "The length of time in seconds this "+
+    "certificate will be valid for from the moment of creation (in seconds). " +
+    "Default #{DEFAULT_TIME}.") do |val|
+      options[:time] = val.chomp.to_i
+  end
+  opt.on("-I", "--include-key", "Include the key in the output.") do
+    options[:keyout] = true
+  end
+  opt.on_tail("-h", "-?", "--help", "Show this help message.") do
+    puts opts
+    exit
+  end
+  opt.on_tail("-v", "--version", "Show the version.") do
+    puts "1.0"
+    exit
+  end
+end
+
+opts.parse!
+
+begin
+  keyfile = File.read(ARGV.shift.chomp)
+rescue
+  $stderr.puts "Please supply a key", opts
+  exit(1)
+end
+
+begin
+  key = OpenSSL::PKey::RSA.new(keyfile, options[:keypass])
+rescue
+  $stderr.puts "Please ensure that the key supplied is an RSA key.", opts
+  exit(1)
+end
+
+name = OpenSSL::X509::Name.parse options[:name]
+
+cert = OpenSSL::X509::Certificate.new
+cert.version = 2
+cert.serial = 0
+cert.not_before = Time.now
+cert.not_after = Time.now + options[:time]
+cert.public_key = key.public_key
+cert.subject = name
+
+ext_factory = OpenSSL::X509::ExtensionFactory.new(nil, cert)
+ext_factory.create_extension("basicConstraints", "CA:FALSE")
+ext_factory.create_extension("keyUsage",
+  "keyEncipherment,dataEncipherment,digitalSignature")
+ext_factory.create_extension("subjectKeyIdentifier", "hash")
+
+cert.issuer = name
+cert.sign(key, OpenSSL::Digest::SHA1.new)
+
+if options[:out]
+  File.open(options[:out], "w") do |f|
+    f.syswrite(cert.to_pem)
+    f.syswrite(key.to_pem) if options[:keyout]
+  end
+else
+  puts cert.to_pem
+  puts key.to_pem if options[:keyout]
+end
