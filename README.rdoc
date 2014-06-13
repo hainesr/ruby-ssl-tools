@@ -9,9 +9,8 @@ Copyright:: (c) 2011 The University of Manchester, UK
 
 These ruby scripts are simple examples of how to achieve various things using
 SSL and HTTPS. Their purpose is purely for my own education so they may well be
-rather buggy and not fit for purpose. In keeping with what seem to pass for
-coding standards within the ruby community error and input checking is done
-randomly and in many cases not at all.
+rather buggy and not fit for purpose. Error and input checking is done randomly
+and in many cases not at all.
 
 See the help for each individual script with the '-h' option.
 
