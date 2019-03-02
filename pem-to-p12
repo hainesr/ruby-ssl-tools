@@ -34,7 +34,7 @@
 require 'rubygems'
 require 'openssl'
 require 'optparse'
-require 'highline'
+require 'io/console'
 
 options = {}
 opts = OptionParser.new do |opt|
@@ -72,9 +72,9 @@ end
 
 password = options[:password]
 if password.nil?
-  hl = HighLine.new($stdin, $stderr)
-  p1 = hl.ask("Enter Export Password: ") { |q| q.echo = false }
-  p2 = hl.ask("Verify Export Password: ") { |q| q.echo = false }
+  p1 = $stdin.getpass("Enter Export Password:")
+  p2 = $stdin.getpass("Verify Export Password:")
+
   if p1 == p2
     password = p1
   else
