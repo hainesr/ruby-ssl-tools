@@ -55,7 +55,7 @@ opts = OptionParser.new do |opt|
     exit
   end
   opt.on_tail("-v", "--version", "Show the version.") do
-    puts "1.0"
+    puts "2.0"
     exit
   end
 end
