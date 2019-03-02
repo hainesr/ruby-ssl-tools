@@ -34,7 +34,7 @@
 require 'rubygems'
 require 'openssl'
 require 'optparse'
-require 'highline/import'
+require 'io/console'
 
 options = {:cipher => "des3"}
 opts = OptionParser.new do |opt|
@@ -83,8 +83,7 @@ password = options[:password]
 begin
   p12 = OpenSSL::PKCS12.new(data, password)
 rescue
-  hl = HighLine.new($stdin, $stderr)
-  password = hl.ask("Enter Import Password: ") { |q| q.echo = false }
+  password = $stdin.getpass("Enter Import Password:")
   retry
 end
 
