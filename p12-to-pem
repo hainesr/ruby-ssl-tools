@@ -73,7 +73,7 @@ opts.parse!
 
 infile = ARGV.shift
 if infile.nil?
-  $stderr.puts opts
+  warn opts
   exit(1)
 else
   data = File.read(infile.chomp)

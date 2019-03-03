@@ -62,15 +62,6 @@ Style/RescueStandardError:
     - 'p12-to-pem'
     - 'ssl-client'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/StderrPuts:
-  Exclude:
-    - 'cert-gen'
-    - 'key-gen'
-    - 'p12-to-pem'
-    - 'pem-to-p12'
-
 # Offense count: 205
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.

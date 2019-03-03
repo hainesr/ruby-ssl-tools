@@ -64,7 +64,7 @@ opts.parse!
 
 infile = ARGV.shift
 if infile.nil?
-  $stderr.puts opts
+  warn opts
   exit(1)
 else
   data = File.read(infile.chomp)
@@ -78,7 +78,7 @@ if password.nil?
   if p1 == p2
     password = p1
   else
-    $stderr.puts "Password mismatch"
+    warn "Password mismatch"
     exit(1)
   end
 end

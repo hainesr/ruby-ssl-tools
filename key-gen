@@ -113,7 +113,7 @@ else
       password = p1
     end
   else
-    $stderr.puts "Password mismatch"
+    warn "Password mismatch"
     exit(1)
   end
 end
