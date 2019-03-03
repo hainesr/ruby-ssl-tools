@@ -28,7 +28,6 @@ Layout/SpaceAroundKeyword:
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Exclude:
-    - 'https-get'
     - 'key-gen'
     - 'p12-to-pem'
     - 'pem-to-p12'
