@@ -36,7 +36,7 @@ require 'openssl'
 require 'optparse'
 
 DEFAULT_PORT = 6666
-MESSAGE = "Hello, Ruby SSL World!"
+MESSAGE = "Hello, Ruby SSL World!".freeze
 
 options = {:port => DEFAULT_PORT, :message => MESSAGE}
 opts = OptionParser.new do |opt|

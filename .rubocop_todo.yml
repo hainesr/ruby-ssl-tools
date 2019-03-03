@@ -42,15 +42,6 @@ Layout/SpaceInsideHashLiteralBraces:
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'cert-gen'
-    - 'https-get'
-    - 'key-gen'
-    - 'ssl-server'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

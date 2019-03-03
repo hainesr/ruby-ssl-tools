@@ -37,7 +37,7 @@ require 'optparse'
 require 'io/console'
 
 MIN_KEY_SIZE = 1024
-KEY_TYPES = %i[dsa rsa]
+KEY_TYPES = %i[dsa rsa].freeze
 DEFAULT_TYPE = KEY_TYPES[1]
 
 options = {
