@@ -36,32 +36,32 @@ require 'openssl'
 require 'optparse'
 
 DEFAULT_PORT = 6666
-MESSAGE = "Hello, Ruby SSL World!".freeze
+MESSAGE = 'Hello, Ruby SSL World!'.freeze
 
 options = { port: DEFAULT_PORT, message: MESSAGE }
 opts = OptionParser.new do |opt|
-  opt.banner = "Usage: ssl-server [options]"
-  opt.separator "  A basic secure sockets server where [options] can be:"
-  opt.on("-p PORT", "--port=PORT", "The port number to listen on. Should be " \
+  opt.banner = 'Usage: ssl-server [options]'
+  opt.separator '  A basic secure sockets server where [options] can be:'
+  opt.on('-p PORT', '--port=PORT', 'The port number to listen on. Should be ' \
     "at least 1024 if not started as root. Default #{DEFAULT_PORT}.") do |val|
     options[:port] = val.chomp.to_i
   end
-  opt.on("-c CERT:PASS", "--cert=CERT:PASS", "certificate") do |val|
-    options[:cert], options[:pass] = val.chomp.split(":", 2)
+  opt.on('-c CERT:PASS', '--cert=CERT:PASS', 'certificate') do |val|
+    options[:cert], options[:pass] = val.chomp.split(':', 2)
   end
-  opt.on("-k KEY:PASS", "--key=KEY:PASS", "Private Key") do |val|
-    options[:key], options[:pass] = val.chomp.split(":", 2)
+  opt.on('-k KEY:PASS', '--key=KEY:PASS', 'Private Key') do |val|
+    options[:key], options[:pass] = val.chomp.split(':', 2)
   end
-  opt.on("-m MESSAGE", "--message=MESSAGE", "The message for clients who " \
+  opt.on('-m MESSAGE', '--message=MESSAGE', 'The message for clients who ' \
     "successfully connect to this server. Default '#{MESSAGE}'.") do |val|
     options[:message] = val.chomp
   end
-  opt.on_tail("-h", "-?", "--help", "Show this help message.") do
+  opt.on_tail('-h', '-?', '--help', 'Show this help message.') do
     puts opts
     exit
   end
-  opt.on_tail("-v", "--version", "Show the version.") do
-    puts "2.0"
+  opt.on_tail('-v', '--version', 'Show the version.') do
+    puts '2.0'
     exit
   end
 end
@@ -83,14 +83,14 @@ context.key = pkey
 
 tcp = TCPServer.new(options[:port])
 server = OpenSSL::SSL::SSLServer.new(tcp, context)
-puts "Listening for connections... (^c to stop)"
+puts 'Listening for connections... (^c to stop)'
 loop do
   Thread.start(server.accept) do |client|
-    print "  Got connection..."
-    client.puts "*** Message follows ***"
+    print '  Got connection...'
+    client.puts '*** Message follows ***'
     client.puts options[:message]
-    client.puts "***  Message ends   ***"
+    client.puts '***  Message ends   ***'
     client.close
-    puts " closed"
+    puts ' closed'
   end
 end

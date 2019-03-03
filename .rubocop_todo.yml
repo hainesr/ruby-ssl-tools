@@ -21,11 +21,3 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceAroundKeyword:
   Exclude:
     - 'ssl-client'
-
-# Offense count: 205
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'ssl-server'
