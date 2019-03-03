@@ -38,7 +38,7 @@ require 'optparse'
 DEFAULT_PORT = 6666
 MESSAGE = "Hello, Ruby SSL World!".freeze
 
-options = {:port => DEFAULT_PORT, :message => MESSAGE}
+options = { :port => DEFAULT_PORT, :message => MESSAGE }
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: ssl-server [options]"
   opt.separator "  A basic secure sockets server where [options] can be:"

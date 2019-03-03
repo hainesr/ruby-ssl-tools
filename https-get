@@ -37,7 +37,7 @@ require 'optparse'
 
 CA_PATH = '/etc/ssl/certs'.freeze
 
-options = {:ca_path => CA_PATH}
+options = { :ca_path => CA_PATH }
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: https-get [options] URI"
   opt.separator "  GET the first 200 bytes of whatever is at the supplied URI,"

@@ -24,19 +24,6 @@ Layout/SpaceAroundKeyword:
 
 # Offense count: 10
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'cert-gen'
-    - 'https-get'
-    - 'p12-to-pem'
-    - 'ssl-client'
-    - 'ssl-server'
-
-# Offense count: 10
-# Cop supports --auto-correct.
 # Configuration parameters: UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
 # SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
 Style/HashSyntax:

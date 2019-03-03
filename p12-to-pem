@@ -36,7 +36,7 @@ require 'openssl'
 require 'optparse'
 require 'io/console'
 
-options = {:cipher => "des3"}
+options = { :cipher => "des3" }
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: p12-to-pem [options] p12-file"
   opt.separator "  Convert the supplied p12 file into pem format where " \
