@@ -36,35 +36,35 @@ require 'openssl'
 require 'optparse'
 require 'io/console'
 
-options = { cipher: "des3" }
+options = { cipher: 'des3' }
 opts = OptionParser.new do |opt|
-  opt.banner = "Usage: p12-to-pem [options] p12-file"
-  opt.separator "  Convert the supplied p12 file into pem format where " \
-    "[options] can be:"
-  opt.on("-p PASSWORD", "--password=PASSWORD", "The import password for the " \
-    "p12 file. If not specified it will be asked for.") do |val|
+  opt.banner = 'Usage: p12-to-pem [options] p12-file'
+  opt.separator '  Convert the supplied p12 file into pem format where ' \
+    '[options] can be:'
+  opt.on('-p PASSWORD', '--password=PASSWORD', 'The import password for the ' \
+    'p12 file. If not specified it will be asked for.') do |val|
     options[:password] = val.chomp
   end
-  opt.on("-R", "--reuse-password", "Use the same password for pem export as " \
-    "was used for the p12 import.") do
+  opt.on('-R', '--reuse-password', 'Use the same password for pem export as ' \
+    'was used for the p12 import.') do
     options[:reuse] = true
   end
-  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " \
+  opt.on('-c CIPHER', '--cipher=CIPHER', 'Set the cipher to be used for ' \
     "encrypting the output. Use 'none' for no encryption. Default " \
     "'#{options[:cipher]}'.") do |val|
     options[:cipher] = val.chomp
   end
-  opt.on("-l", "--list-ciphers", "List available ciphers for output.") do
+  opt.on('-l', '--list-ciphers', 'List available ciphers for output.') do
     list = OpenSSL::Cipher.ciphers
     puts list[(list.length / 2)..-1]
     exit
   end
-  opt.on_tail("-h", "-?", "--help", "Show this help message.") do
+  opt.on_tail('-h', '-?', '--help', 'Show this help message.') do
     puts opts
     exit
   end
-  opt.on_tail("-v", "--version", "Show the version.") do
-    puts "2.0"
+  opt.on_tail('-v', '--version', 'Show the version.') do
+    puts '2.0'
     exit
   end
 end
@@ -83,7 +83,7 @@ password = options[:password]
 begin
   p12 = OpenSSL::PKCS12.new(data, password)
 rescue StandardError
-  password = $stdin.getpass("Enter Import Password:")
+  password = $stdin.getpass('Enter Import Password:')
   retry
 end
 
@@ -92,7 +92,7 @@ password = nil unless options[:reuse]
 cert = OpenSSL::X509::Certificate.new(p12.certificate)
 key = OpenSSL::PKey::RSA.new(p12.key)
 
-if options[:cipher] == "none"
+if options[:cipher] == 'none'
   cipher = nil
   password = nil
 else

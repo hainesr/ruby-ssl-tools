@@ -28,7 +28,6 @@ Layout/SpaceAroundKeyword:
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Exclude:
-    - 'p12-to-pem'
     - 'pem-to-p12'
     - 'ssl-client'
     - 'ssl-server'
