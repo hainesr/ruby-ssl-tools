@@ -37,7 +37,7 @@ require 'optparse'
 DEFAULT_NAME = 'CN=nobody/DC=example'.freeze
 DEFAULT_TIME = 3600
 
-options = { :name => DEFAULT_NAME, :time => DEFAULT_TIME }
+options = { name: DEFAULT_NAME, time: DEFAULT_TIME }
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: cert-gen [options] key"
   opt.separator "  Generate a self-signed certificate in pem format where " \

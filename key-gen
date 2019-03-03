@@ -41,9 +41,9 @@ KEY_TYPES = %i[dsa rsa].freeze
 DEFAULT_TYPE = KEY_TYPES[1]
 
 options = {
-  :type => DEFAULT_TYPE,
-  :size => MIN_KEY_SIZE,
-  :cipher => "aes-128-cbc"
+  type: DEFAULT_TYPE,
+  size: MIN_KEY_SIZE,
+  cipher: "aes-128-cbc"
 }
 
 opts = OptionParser.new do |opt|

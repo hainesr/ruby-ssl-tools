@@ -37,7 +37,7 @@ require 'optparse'
 
 DEFAULT_PORT = 6666
 
-options = { :port => DEFAULT_PORT }
+options = { port: DEFAULT_PORT }
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: ssl-client [options] host"
   opt.separator "  A basic secure sockets client where [options] can be:"
