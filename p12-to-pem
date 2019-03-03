@@ -39,20 +39,20 @@ require 'io/console'
 options = {:cipher => "des3"}
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: p12-to-pem [options] p12-file"
-  opt.separator "  Convert the supplied p12 file into pem format where " +
+  opt.separator "  Convert the supplied p12 file into pem format where " \
     "[options] can be:"
-  opt.on("-p PASSWORD", "--password=PASSWORD", "The import password for the " +
+  opt.on("-p PASSWORD", "--password=PASSWORD", "The import password for the " \
     "p12 file. If not specified it will be asked for.") do |val|
-      options[:password] = val.chomp
+    options[:password] = val.chomp
   end
-  opt.on("-R", "--reuse-password", "Use the same password for pem export as " +
+  opt.on("-R", "--reuse-password", "Use the same password for pem export as " \
     "was used for the p12 import.") do
-      options[:reuse] = true
+    options[:reuse] = true
   end
-  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " +
-    "encrypting the output. Use 'none' for no encryption. Default " +
+  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " \
+    "encrypting the output. Use 'none' for no encryption. Default " \
     "'#{options[:cipher]}'.") do |val|
-      options[:cipher] = val.chomp
+    options[:cipher] = val.chomp
   end
   opt.on("-l", "--list-ciphers", "List available ciphers for output.") do
     list = OpenSSL::Cipher.ciphers

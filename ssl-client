@@ -41,13 +41,13 @@ options = {:port => DEFAULT_PORT}
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: ssl-client [options] host"
   opt.separator "  A basic secure sockets client where [options] can be:"
-  opt.on("-p PORT", "--port=PORT", "The port number to connect to. Default " +
+  opt.on("-p PORT", "--port=PORT", "The port number to connect to. Default " \
     "#{DEFAULT_PORT}.") do |val|
-      options[:port] = val.chomp.to_i
+    options[:port] = val.chomp.to_i
   end
-  opt.on("-c CERTIFICATE", "--cert=CERTICATE", "Certificate and key in " +
+  opt.on("-c CERTIFICATE", "--cert=CERTICATE", "Certificate and key in " \
     "pem format.") do |val|
-      options[:cert] = val.chomp
+    options[:cert] = val.chomp
   end
   opt.on_tail("-h", "-?", "--help", "Show this help message.") do
     puts opts

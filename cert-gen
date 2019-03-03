@@ -40,21 +40,21 @@ DEFAULT_TIME = 3600
 options = {:name => DEFAULT_NAME, :time => DEFAULT_TIME}
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: cert-gen [options] key"
-  opt.separator "  Generate a self-signed certificate in pem format where " +
+  opt.separator "  Generate a self-signed certificate in pem format where " \
     "[options] can be:"
-  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " +
-    "generated certificate. If this is not specified it will be written to " +
+  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " \
+    "generated certificate. If this is not specified it will be written to " \
     "the terminal.") do |val|
-      options[:out] = val.chomp
+    options[:out] = val.chomp
   end
-  opt.on("-n NAME", "--name=NAME", "The name to be used for the " +
+  opt.on("-n NAME", "--name=NAME", "The name to be used for the " \
     "subject/issuer of the certificate. Default '#{DEFAULT_NAME}'.") do |val|
-      options[:name] = val.chomp
+    options[:name] = val.chomp
   end
-  opt.on("-t TIME", "--time TIME", "The length of time in seconds this "+
-    "certificate will be valid for from the moment of creation (in seconds). " +
+  opt.on("-t TIME", "--time TIME", "The length of time in seconds this " \
+    "certificate will be valid for from the moment of creation (in seconds). " \
     "Default #{DEFAULT_TIME}.") do |val|
-      options[:time] = val.chomp.to_i
+    options[:time] = val.chomp.to_i
   end
   opt.on("-I", "--include-key", "Include the key in the output.") do
     options[:keyout] = true

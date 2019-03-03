@@ -49,25 +49,25 @@ options = {
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: key-gen [options]"
   opt.separator "  Generate a public key pair where [options] can be:"
-  opt.on("-o FILENAME", "--out=FILENAME", "The filename root in which to " +
-    "store the generated keys. If this is not specified they will be written " +
+  opt.on("-o FILENAME", "--out=FILENAME", "The filename root in which to " \
+    "store the generated keys. If this is not specified they will be written " \
     "to 'id_<key-type>'.") do |val|
-      options[:out] = val.chomp
+    options[:out] = val.chomp
   end
-  opt.on("-t TYPE", "--type=TYPE", "The type of the key. Can be 'rsa' or " +
+  opt.on("-t TYPE", "--type=TYPE", "The type of the key. Can be 'rsa' or " \
     "'dsa'. Default '#{DEFAULT_TYPE}'.") do |val|
-      type = val.chomp.downcase.to_sym
-      options[:type] = type if KEY_TYPES.include? type
+    type = val.chomp.downcase.to_sym
+    options[:type] = type if KEY_TYPES.include? type
   end
-  opt.on("-s SIZE", "--size=SIZE", "The desired key size. Anything under " +
+  opt.on("-s SIZE", "--size=SIZE", "The desired key size. Anything under " \
     "#{MIN_KEY_SIZE} will be ignored. Default #{MIN_KEY_SIZE}.") do |val|
-      size = val.chomp.to_i
-      options[:size] = size > MIN_KEY_SIZE ? size : MIN_KEY_SIZE
+    size = val.chomp.to_i
+    options[:size] = size > MIN_KEY_SIZE ? size : MIN_KEY_SIZE
   end
-  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " +
-    "encrypting the key. Use 'none' for no encryption. Default " +
+  opt.on("-c CIPHER", "--cipher=CIPHER", "Set the cipher to be used for " \
+    "encrypting the key. Use 'none' for no encryption. Default " \
     "'#{options[:cipher]}'.") do |val|
-      options[:cipher] = val.chomp
+    options[:cipher] = val.chomp
   end
   opt.on("-l", "--list-ciphers", "List available ciphers for output.") do
     list = OpenSSL::Cipher.ciphers

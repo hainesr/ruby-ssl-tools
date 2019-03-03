@@ -39,16 +39,16 @@ require 'io/console'
 options = {}
 opts = OptionParser.new do |opt|
   opt.banner = "Usage: pem-to-p12 [options] pem-file"
-  opt.separator "  Convert the supplied pem file into p12 format where " +
+  opt.separator "  Convert the supplied pem file into p12 format where " \
     "[options] can be:"
-  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " +
-    "output. If this is not specified it will be written to the " +
+  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " \
+    "output. If this is not specified it will be written to the " \
     "terminal.") do |val|
-      options[:out] = val.chomp
+    options[:out] = val.chomp
   end
-  opt.on("-p PASSWORD", "--password=PASSWORD", "The export password for the " +
+  opt.on("-p PASSWORD", "--password=PASSWORD", "The export password for the " \
     "p12 file. If not specified it will be asked for.") do |val|
-      options[:password] = val.chomp
+    options[:password] = val.chomp
   end
   opt.on_tail("-h", "-?", "--help", "Show this help message.") do
     puts opts

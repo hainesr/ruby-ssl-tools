@@ -42,26 +42,26 @@ opts = OptionParser.new do |opt|
   opt.banner = "Usage: https-get [options] URI"
   opt.separator "  GET the first 200 bytes of whatever is at the supplied URI,"
   opt.separator "  where URI is a https URI and [options] (curl-like) can be:"
-  opt.on("-E CERT_FILE:PASSWORD", "--cert=CERT_FILE:PASSWORD", "Use the " +
-    "specified client certificate file. If the optional password is not " +
-    "provided it will be asked for on the command line. Must be in PEM " +
+  opt.on("-E CERT_FILE:PASSWORD", "--cert=CERT_FILE:PASSWORD", "Use the " \
+    "specified client certificate file. If the optional password is not " \
+    "provided it will be asked for on the command line. Must be in PEM " \
     "format.") do |val|
-      cert, pass = val.chomp.split(":", 2)
-      options[:client_cert] = cert
-      options[:client_pass] = pass if pass
+    cert, pass = val.chomp.split(":", 2)
+    options[:client_cert] = cert
+    options[:client_pass] = pass if pass
   end
-  opt.on("--cacert=CERT_FILE", "Use the specified certificate file to " +
+  opt.on("--cacert=CERT_FILE", "Use the specified certificate file to " \
     "verify the peer. Must be in PEM format.") do |val|
-      options[:ca_file] = val.chomp
+    options[:ca_file] = val.chomp
   end
-  opt.on("--capath=CERTS_PATH", "Use the specified certificate directory to " +
-    "verify the peer. Certificates must be in PEM format (defaults to " +
+  opt.on("--capath=CERTS_PATH", "Use the specified certificate directory to " \
+    "verify the peer. Certificates must be in PEM format (defaults to " \
     "'#{CA_PATH}').") do |val|
-      options[:ca_path] = val.chomp
+    options[:ca_path] = val.chomp
   end
-  opt.on("-k", "--insecure", "Allow insecure connections: no peer " +
+  opt.on("-k", "--insecure", "Allow insecure connections: no peer " \
     "verification.") do
-      options[:no_verify] = true
+    options[:no_verify] = true
   end
   opt.on_tail("-h", "-?", "--help", "Show this help message.") do
     puts opt

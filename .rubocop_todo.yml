@@ -14,19 +14,6 @@ Layout/AlignParameters:
   Exclude:
     - 'cert-gen'
 
-# Offense count: 20
-# Cop supports --auto-correct.
-# Configuration parameters: Width, IgnoredPatterns.
-Layout/IndentationWidth:
-  Exclude:
-    - 'cert-gen'
-    - 'https-get'
-    - 'key-gen'
-    - 'p12-to-pem'
-    - 'pem-to-p12'
-    - 'ssl-client'
-    - 'ssl-server'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.
