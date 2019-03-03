@@ -63,7 +63,7 @@ opts.parse!
 
 begin
   options[:host] = ARGV.shift.chomp
-rescue
+rescue StandardError
   puts "Please supply a host to connect to.", opts
   exit(1)
 end

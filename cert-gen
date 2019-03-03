@@ -73,14 +73,14 @@ opts.parse!
 
 begin
   keyfile = File.read(ARGV.shift.chomp)
-rescue
+rescue StandardError
   warn "Please supply a key", opts
   exit(1)
 end
 
 begin
   key = OpenSSL::PKey::RSA.new(keyfile, options[:keypass])
-rescue
+rescue StandardError
   warn "Please ensure that the key supplied is an RSA key.", opts
   exit(1)
 end

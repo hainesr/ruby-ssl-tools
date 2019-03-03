@@ -29,17 +29,6 @@ Layout/SpaceAroundKeyword:
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'cert-gen'
-    - 'https-get'
-    - 'p12-to-pem'
-    - 'ssl-client'
-
 # Offense count: 205
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.

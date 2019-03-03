@@ -77,7 +77,7 @@ opts.parse!
 
 begin
   uri = URI.parse(ARGV[0])
-rescue
+rescue StandardError
   puts opts
   exit(1)
 end

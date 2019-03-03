@@ -82,7 +82,7 @@ end
 password = options[:password]
 begin
   p12 = OpenSSL::PKCS12.new(data, password)
-rescue
+rescue StandardError
   password = $stdin.getpass("Enter Import Password:")
   retry
 end
