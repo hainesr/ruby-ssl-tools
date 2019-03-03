@@ -28,5 +28,4 @@ Layout/SpaceAroundKeyword:
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Exclude:
-    - 'ssl-client'
     - 'ssl-server'
