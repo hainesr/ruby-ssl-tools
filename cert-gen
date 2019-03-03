@@ -97,8 +97,9 @@ cert.subject = name
 
 ext_factory = OpenSSL::X509::ExtensionFactory.new(nil, cert)
 ext_factory.create_extension("basicConstraints", "CA:FALSE")
-ext_factory.create_extension("keyUsage",
-  "keyEncipherment,dataEncipherment,digitalSignature")
+ext_factory.create_extension(
+  "keyUsage", "keyEncipherment,dataEncipherment,digitalSignature"
+)
 ext_factory.create_extension("subjectKeyIdentifier", "hash")
 
 cert.issuer = name
