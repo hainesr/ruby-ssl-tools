@@ -35,11 +35,6 @@ Layout/SpaceInsideHashLiteralBraces:
     - 'ssl-client'
     - 'ssl-server'
 
-# Offense count: 4
-# Configuration parameters: CountComments, ExcludedMethods.
-Metrics/BlockLength:
-  Max: 35
-
 # Offense count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
