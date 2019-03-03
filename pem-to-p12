@@ -38,24 +38,24 @@ require 'io/console'
 
 options = {}
 opts = OptionParser.new do |opt|
-  opt.banner = "Usage: pem-to-p12 [options] pem-file"
-  opt.separator "  Convert the supplied pem file into p12 format where " \
-    "[options] can be:"
-  opt.on("-o FILENAME", "--out=FILENAME", "The file in which to store the " \
-    "output. If this is not specified it will be written to the " \
-    "terminal.") do |val|
+  opt.banner = 'Usage: pem-to-p12 [options] pem-file'
+  opt.separator '  Convert the supplied pem file into p12 format where ' \
+    '[options] can be:'
+  opt.on('-o FILENAME', '--out=FILENAME', 'The file in which to store the ' \
+    'output. If this is not specified it will be written to the ' \
+    'terminal.') do |val|
     options[:out] = val.chomp
   end
-  opt.on("-p PASSWORD", "--password=PASSWORD", "The export password for the " \
-    "p12 file. If not specified it will be asked for.") do |val|
+  opt.on('-p PASSWORD', '--password=PASSWORD', 'The export password for the ' \
+    'p12 file. If not specified it will be asked for.') do |val|
     options[:password] = val.chomp
   end
-  opt.on_tail("-h", "-?", "--help", "Show this help message.") do
+  opt.on_tail('-h', '-?', '--help', 'Show this help message.') do
     puts opts
     exit
   end
-  opt.on_tail("-v", "--version", "Show the version.") do
-    puts "2.0"
+  opt.on_tail('-v', '--version', 'Show the version.') do
+    puts '2.0'
     exit
   end
 end
@@ -72,23 +72,23 @@ end
 
 password = options[:password]
 if password.nil?
-  p1 = $stdin.getpass("Enter Export Password:")
-  p2 = $stdin.getpass("Verify Export Password:")
+  p1 = $stdin.getpass('Enter Export Password:')
+  p2 = $stdin.getpass('Verify Export Password:')
 
   if p1 == p2
     password = p1
   else
-    warn "Password mismatch"
+    warn 'Password mismatch'
     exit(1)
   end
 end
 
 cert = OpenSSL::X509::Certificate.new(data)
 pkey = OpenSSL::PKey::RSA.new(data)
-p12 = OpenSSL::PKCS12.create(password, "Imported Certificate", pkey, cert)
+p12 = OpenSSL::PKCS12.create(password, 'Imported Certificate', pkey, cert)
 
 if options[:out]
-  File.open(options[:out], "w") { |f| f.syswrite(p12.to_der) }
+  File.open(options[:out], 'w') { |f| f.syswrite(p12.to_der) }
 else
   puts p12.to_der
 end
