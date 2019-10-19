@@ -22,7 +22,7 @@ recommended as well.
 
 ### Version 2
 
-Tested with ruby 2.5.1.
+Tested with ruby 2.5.1 and 2.6.3.
 
 No gems required.
 
