@@ -36,7 +36,7 @@
 require 'openssl'
 require 'optparse'
 
-DEFAULT_NAME = 'CN=nobody/DC=example'.freeze
+DEFAULT_NAME = 'CN=nobody/DC=example'
 DEFAULT_TIME = 3600
 
 options = { name: DEFAULT_NAME, time: DEFAULT_TIME }

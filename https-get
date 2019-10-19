@@ -37,7 +37,7 @@ require 'uri'
 require 'net/https'
 require 'optparse'
 
-CA_PATH = '/etc/ssl/certs'.freeze
+CA_PATH = '/etc/ssl/certs'
 
 options = { ca_path: CA_PATH }
 opts = OptionParser.new do |opt|
