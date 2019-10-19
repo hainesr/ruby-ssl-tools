@@ -78,7 +78,7 @@ tcp = TCPSocket.new(options[:host], options[:port])
 socket = OpenSSL::SSL::SSLSocket.new(tcp, context)
 socket.connect
 puts 'Connected to server...'
-while(out = socket.gets)
+while (out = socket.gets)
   puts out
 end
 puts 'Connection closed.'
