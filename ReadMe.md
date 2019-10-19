@@ -9,7 +9,9 @@ SSL and HTTPS. Their purpose is purely for my own education so they may well be
 rather buggy and not fit for purpose. Error and input checking is done randomly
 and in many cases not at all.
 
-See the help for each individual script with the '-h' option.
+## Usage
+
+See the help for each individual script with the `-h` option.
 
 ## Requirements
 
